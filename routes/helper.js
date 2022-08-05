@@ -18,12 +18,27 @@ export async function createmovie(data) {
     .collection("movies")
     .insertMany(data);
 }
+
+export async function createUser(data) {
+  return await client
+    .db("BATCH36db")
+    .collection("users")
+    .insertOne(data);
+}
 export async function getmovieById(id) {
   return await client
     .db("BATCH36db")
     .collection("movies")
     .findOne({ id: id });
 }
+
+export async function getUserByName(username) {
+  return await client
+    .db("BATCH36db")
+    .collection("users")
+    .findOne({ username: username});
+}
+
 export async function getAllmovies(request) {
   return await client
     .db("BATCH36db")

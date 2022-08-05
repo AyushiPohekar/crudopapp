@@ -4,6 +4,8 @@ import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
  import cors from 'cors';
  import {moviesRouter} from './routes/movies.js';
+ import {usersRouter} from './routes/users.js';
+
 
 dotenv.config();
 console.log(process.env.MONGO_URL);
@@ -68,6 +70,9 @@ app.get("/", function (req, res) {
 // company: "Xiomi"
 // }
 // ];
-app.use('/movies',moviesRouter)
+app.use('/movies',moviesRouter);
+app.use('/users',usersRouter);
 
 app.listen(PORT, () => console.log(`App started in ${PORT}`));
+
+
