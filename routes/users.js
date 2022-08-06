@@ -2,11 +2,12 @@
 import express from "express";
 import {  createUser,getUserByName } from "./helper.js";
 const router=express.Router();
-import bycrpt from "bcrypt";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 async function genHashedPassword(password){
   const No_of_Rounds=10;
-  const salt=await bycrpt.genSalt(No_of_Rounds);
+  const salt=await bcrypt.genSalt(No_of_Rounds);
   const hashedPassword=await bycrpt.hash(password,salt);
   return hashedPassword;
 }
@@ -37,6 +38,34 @@ router.post("/signup",async function (request, response) {
    }
  
    });
+
+   router.post("/login",async function (request, response) {
+    const {username,password}=request.body;
+    
+    const userFromDB=await getUserByName(username);
+ 
+    console.log(!userFromDB);
+    if(!userFromDB){
+     response.status(401).send({msg:"invalid credentials"});
+    }
+    else{
+      const storePassword=userFromDB.password;
+      const isPasswordMatch=await bcrypt.compare(password,storePassword);
+      console.log(isPasswordMatch);
+    
+      if(isPasswordMatch)
+      {
+        const token=jwt.sign({id:userFromDB._id},process.env.SECRET_KEY);
+        response.send({msg:"Successful login",token:token});
+      }
+      else
+      {
+        response.status(401).send({msg:"Invalid Credentials"});
+      }
+    }
+   
+  
+    });
 
  
 
