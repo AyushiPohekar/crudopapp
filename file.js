@@ -1,6 +1,6 @@
-const fs=require('fs');
+import fs from "fs";
 const quote="No beauty shines better than that of a good heart";
-fs.writeFile("./awesome.html",quote,(err)=>{console.log("Completed writing");});
+fs.writeFile("./new/awesome1.html",quote,(err)=>{console.log("Completed writing");});
 
 
 
